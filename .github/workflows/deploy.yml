@@ -1,41 +1,55 @@
-name: Build and deploy
+name: Deploy
 
 on:
     push:
-        branches: [main]
+        branches: ['main']
+   workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: 'pages'
+  cancel-in-progress: false
 
 jobs:
-    deploy:
-        runs-on: ubuntu-latest
+  deploy:
+      environment:
+        name: github-pages
+        url: ${{ steps.deployment.outputs.page_url }}
 
-        steps:
-            - uses: actions/checkout@v3
+      runs-on: ubuntu-latest
 
-            - name: Setup Node
-              uses: actions/setup-node@v3
-              with:
-                  node-version: "18"
-
-            - name: Deps
-              run: |
-                  npm install --global pnpm
-                  pnpm i
-
-            - name: Build plugin(s)
-              run: pnpm lune ci
-
-            - name: Copy additional files
-              run: |
-                  cp README.md dist/README.md
-                  printf -- "---\npermalink: /404.html\n---\n" > dist/404.md
-                  printf -- "> **Note:** You accessed a link that returned a 404, probably by clicking one of the plugin links. You're supposed to copy the link address and add it into shelter.\n\n" >> dist/404.md
-                  cat README.md >> dist/404.md
-
-              # Documentation: https://github.com/peaceiris/actions-gh-pages
-            - name: Deploy to GitHub Pages
-              uses: peaceiris/actions-gh-pages@v3
-              with:
-                  github_token: ${{ secrets.GITHUB_TOKEN }}
-                  publish_dir: ./dist
-                  # Makes it so the md files in the previous step get processed by GitHub Pages
-                  enable_jekyll: true
+      steps:
+       -
+         name: Checkout 
+         uses: actions/checkout@v3
+       -
+         name: Setup Node
+         uses: actions/setup-node@v3
+         with:
+           node-version: 18
+       -
+         uses: pnpm/action-setup@master
+         with:
+           version: latest
+       -
+         name: Install Node.js dependencies
+         run: pnpm i
+       -
+         name: Build plugin(s)
+         run: pnpm lune ci
+       -
+         name: Setup Pages
+         uses: actions/configure-pages@v3
+       -
+         name: Upload dist
+         uses: actions/upload-pages-artifact@v1
+         with:
+           path: './dist'
+       -
+         name: Deploy
+         id: deployment
+         uses: actions/deploy-pages@v2
