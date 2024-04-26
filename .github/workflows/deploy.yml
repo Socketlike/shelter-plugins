@@ -39,7 +39,7 @@ jobs:
         run: pnpm i
 
       - name: Build plugin(s)
-        run: pnpm ci
+        run: pnpm run ci
 
       - name: Setup Pages
         uses: actions/configure-pages@v3
