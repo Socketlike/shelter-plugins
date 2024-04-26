@@ -16,40 +16,39 @@ concurrency:
 
 jobs:
   deploy:
-      environment:
-        name: github-pages
-        url: ${{ steps.deployment.outputs.page_url }}
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
 
-      runs-on: ubuntu-latest
+    runs-on: ubuntu-latest
 
-      steps:
-       -
-         name: Checkout 
-         uses: actions/checkout@v3
-       -
-         name: Setup Node
-         uses: actions/setup-node@v3
-         with:
-           node-version: 18
-       -
-         uses: pnpm/action-setup@master
-         with:
-           version: latest
-       -
-         name: Install Node.js dependencies
-         run: pnpm i
-       -
-         name: Build plugin(s)
-         run: pnpm lune ci
-       -
-         name: Setup Pages
-         uses: actions/configure-pages@v3
-       -
-         name: Upload dist
-         uses: actions/upload-pages-artifact@v1
-         with:
-           path: './dist'
-       -
-         name: Deploy
-         id: deployment
-         uses: actions/deploy-pages@v2
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - uses: pnpm/action-setup@master
+        with:
+          version: latest
+
+      - name: Install Node.js dependencies
+        run: pnpm i
+
+      - name: Build plugin(s)
+        run: pnpm ci
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      - name: Upload dist
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: './dist'
+
+      - name: Deploy
+        id: deployment
+        uses: actions/deploy-pages@v2
