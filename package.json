@@ -6,7 +6,7 @@
     "prettier:fix": "prettier -w ./plugins",
     "lint": "pnpm run prettier:check && pnpm run eslint:check && pnpm run check",
     "ci": "lune ci",
-    "postci": "node scripts/createIndex.js"
+    "postci": "node scripts/postci.js"
   },
   "engines": {
     "node": ">=18.0.0",

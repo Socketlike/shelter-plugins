@@ -38,5 +38,9 @@ if (index)
   try {
     await fs.writeFile('./dist/index.json', JSON.stringify(index))
   } catch (e) {
-    console.log('could not write index\n', e)
+    console.error('could not write index\n', e)
   }
+
+await fs.copyFile('./public/404.html', './dist').catch((e) => {
+  console.error('could not copy 404.html to dist\n', e)
+})
