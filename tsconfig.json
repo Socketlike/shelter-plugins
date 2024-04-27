@@ -1,16 +1,17 @@
 {
+  "include": [
+    "plugins/**/*.ts",
+    "plugins/**/*.tsx",
+    "node_modules/@uwu/shelter-defs/**/*.d.ts"
+  ],
   "compilerOptions": {
-    "target": "ES2017",
-    "jsx": "react",
-    "module": "ES2022",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
     "noEmit": true,
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "strict": true,
-    "noImplicitAny": true,
-    "strictNullChecks": false,
-    "skipLibCheck": true
+    "target": "ESNext",
+    "lib": ["ESNext", "DOM"],
+    "jsx": "preserve",
+    "jsxImportSource": "solid-js",
+    "moduleResolution": "node",
+    "strict": false,
+    "alwaysStrict": false
   }
 }
