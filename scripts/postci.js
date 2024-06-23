@@ -40,12 +40,3 @@ if (index)
   } catch (e) {
     console.error('could not write index\n', e)
   }
-
-await Promise.all([
-  fs.copyFile('./public/404.html', './dist').catch((e) => {
-    console.error('could not copy 404.html to dist\n', e)
-  }),
-  fs.copyFile('./public/index.html', './dist').catch((e) => {
-    console.error('could not copy index.html to dist\n', e)
-  }),
-])
